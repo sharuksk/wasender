@@ -335,7 +335,6 @@ exports.handleSendMsg = (req, res) => {
     console.log(req.body);
     let dataObj = req.body;
     let toDataNumbers = dataObj.to;
-    let sent = 0;
     console.log(toDataNumbers);
     for (let i = 0; i < toDataNumbers.length; i++) {
       let data;
@@ -551,5 +550,111 @@ exports.handleLogChats = async (req, res) => {
     });
   } catch (err) {
     console.log("err");
+  }
+};
+exports.handleCreateReply = async (req, res) => {
+  try {
+    const client = await MongoClient.connect(url);
+    const db = client.db("WasSender");
+
+    let dataObj = req.body;
+    let postData = await db.collection("reply").insertOne(dataObj);
+    await client.close();
+    res.json({
+      msg: "posted success",
+    });
+  } catch (err) {
+    console.log(err);
+    res.json({
+      msg: err,
+    });
+  }
+};
+exports.handleGetReply = async (req, res) => {
+  try {
+    const client = await MongoClient.connect(url);
+    const db = client.db("WasSender");
+    let getData = await db.collection("reply").find({}).toArray();
+    await client.close();
+    res.json({
+      msg: getData,
+    });
+  } catch (err) {
+    console.log(err);
+    res.json({
+      msg: err,
+    });
+  }
+};
+exports.handleIdReply = async (req, res) => {
+  try {
+    const client = await MongoClient.connect(url);
+    const db = client.db("WasSender");
+    let getData = await db
+      .collection("reply")
+      .findOne({ _id: new ObjectId(req.body.id) });
+    await client.close();
+    res.json({
+      msg: getData,
+    });
+  } catch (err) {
+    console.log(err);
+    res.json({
+      msg: err,
+    });
+  }
+};
+exports.handleDeleteReply = async (req, res) => {
+  try {
+    const client = await MongoClient.connect(url);
+    const db = client.db("WasSender");
+    let dataObj = req.body;
+    let getData = await db
+      .collection("reply")
+      .findOneAndDelete({ _id: new ObjectId(dataObj["_id"]) })
+      .toArray();
+    console.log(getData);
+    await client.close();
+    res.json({
+      msg: "delete",
+    });
+  } catch (err) {
+    console.log(err);
+    res.json({
+      msg: err,
+    });
+  }
+};
+exports.handleEditReply = async (req, res) => {
+  try {
+    const client = await MongoClient.connect(url);
+    const db = client.db("WasSender");
+    const { dataObj, id } = req.body;
+    console.log(dataObj, id);
+    let postData = await db.collection("reply").findOneAndUpdate(
+      { _id: new ObjectId(id) },
+      {
+        $set: {
+          message: dataObj.message,
+          to: dataObj.to,
+          from: dataObj.from,
+          file: dataObj.file?.toString(),
+          fileName: dataObj.fileName,
+          body: dataObj.body,
+          lat: dataObj.lat,
+          lng: dataObj.lng,
+          type: dataObj.type,
+        },
+      }
+    );
+    await client.close();
+    res.json({
+      msg: "edit success",
+    });
+  } catch (err) {
+    console.log(err);
+    res.json({
+      msg: err,
+    });
   }
 };

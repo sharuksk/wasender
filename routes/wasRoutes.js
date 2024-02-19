@@ -14,6 +14,11 @@ const {
   handleInstance,
   handleInstanceChange,
   handleInstanceDetails,
+  handleCreateReply,
+  handleGetReply,
+  handleDeleteReply,
+  handleIdReply,
+  handleEditReply,
 } = require("../controllers");
 const router = require("express").Router();
 
@@ -34,5 +39,12 @@ router.post("/sendmsg", handleSendMsg);
 router.post("/deldup", handleDuplicates);
 router.post("/logmsg", handleLogMessages);
 router.post("/logchat", handleLogChats);
+//reply
+router.post("/getreply", handleGetReply);
+router.post("/createreply", handleCreateReply);
+router.post("/deletereply", handleDeleteReply);
+router.post("/idreply", handleIdReply);
+router.post("/editreply", handleEditReply);
+//
 
 module.exports = router;
