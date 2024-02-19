@@ -59,7 +59,6 @@ exports.handleGetDevices = async (req, res) => {
 exports.handleInstance = async (req, res) => {
   try {
     let dataObj = req.body;
-    console.log(dataObj.instanceID, dataObj.token);
     let config = {
       method: "get",
       url: `https://api.ultramsg.com/${dataObj.instanceID}/instance/status`,
@@ -73,7 +72,6 @@ exports.handleInstance = async (req, res) => {
 
     axios(config)
       .then(async (response) => {
-        console.log("ep1");
         /////////
         console.log(response?.data?.status);
 
@@ -630,7 +628,6 @@ exports.handleEditReply = async (req, res) => {
     const client = await MongoClient.connect(url);
     const db = client.db("WasSender");
     const { dataObj, id } = req.body;
-    console.log(dataObj, id);
     let postData = await db.collection("reply").findOneAndUpdate(
       { _id: new ObjectId(id) },
       {
