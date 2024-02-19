@@ -56,34 +56,6 @@ exports.handleGetDevices = async (req, res) => {
     });
   }
 };
-exports.handleQrCode = async (req, res) => {
-  try {
-    let dataObj = req.body;
-    console.log(dataObj.instanceID, dataObj.token);
-    let config = {
-      method: "get",
-      url: `https://api.ultramsg.com/${dataObj.instanceID}/instance/qr`,
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded",
-      },
-      params: {
-        token: dataObj.token,
-      },
-    };
-
-    axios(config).then((response) => {
-      console.log("finished");
-      res.json({
-        message: true,
-      });
-    });
-  } catch (err) {
-    console.log(err);
-    res.json({
-      message: "qr failure",
-    });
-  }
-};
 exports.handleInstance = async (req, res) => {
   try {
     let dataObj = req.body;
@@ -99,12 +71,51 @@ exports.handleInstance = async (req, res) => {
       },
     };
 
-    axios(config).then((response) => {
-      console.log("finished");
-      res.json({
-        message: response.data,
+    axios(config)
+      .then(async (response) => {
+        console.log("ep1");
+        /////////
+        console.log(response?.data?.status);
+
+        if (response?.data?.status?.accountStatus?.status === "authenticated") {
+          console.log("authenthicated");
+          const client = await MongoClient.connect(url);
+          const db = client.db("WasSender");
+          await db.collection("devices").findOneAndUpdate(
+            {
+              _id: new ObjectId(dataObj["_id"]),
+            },
+            {
+              $set: {
+                authenthicate: true,
+              },
+            }
+          );
+
+          await client.close();
+          res.json({
+            message: response?.data?.status?.accountStatus?.status,
+          });
+        } else if (
+          response?.data?.status?.accountStatus?.status === "standby"
+        ) {
+          console.log("still in stanby");
+          res.json({
+            message: response?.data?.status?.accountStatus?.status,
+          });
+        } else if (
+          response?.data?.status?.accountStatus?.status === "loading"
+        ) {
+          await this.handleInstance(req, res);
+        }
+
+        //////////
+      })
+      .catch((error) => {
+        res.json({
+          message: "thirdParty Failure",
+        });
       });
-    });
   } catch (err) {
     console.log(err);
     res.json({
@@ -112,6 +123,14 @@ exports.handleInstance = async (req, res) => {
     });
   }
 };
+
+const handleInsStatus = () => {
+  try {
+  } catch (err) {
+    console.log(err);
+  }
+};
+//doubts
 exports.handleInstanceChange = async (req, res) => {
   try {
     let { dataObj, type } = req.body;
@@ -156,16 +175,56 @@ exports.handleInstanceDetails = async (req, res) => {
       },
     };
 
-    axios(config).then((response) => {
-      res.json({
-        message: response.data,
+    axios(config)
+      .then((response) => {
+        res.json({
+          message: response.data,
+        });
+      })
+      .catch((error) => {
+        res.json({
+          message: "thirdParty Failure",
+        });
       });
-    });
   } catch (err) {
     console.log(err);
 
     res.json({
       message: `details failure`,
+    });
+  }
+};
+exports.handleQrCode = async (req, res) => {
+  try {
+    let dataObj = req.body;
+    console.log(dataObj.instanceID, dataObj.token);
+    let config = {
+      method: "get",
+      url: `https://api.ultramsg.com/${dataObj.instanceID}/instance/qr`,
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+      params: {
+        token: dataObj.token,
+      },
+    };
+
+    axios(config)
+      .then((response) => {
+        console.log("finished");
+        res.json({
+          message: true,
+        });
+      })
+      .catch((error) => {
+        res.json({
+          message: "thirdParty Failure",
+        });
+      });
+  } catch (err) {
+    console.log(err);
+    res.json({
+      message: "qr failure",
     });
   }
 };
