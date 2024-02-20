@@ -308,6 +308,7 @@ app.post("/ultramsgwebhook", async (req, res) => {
     console.log(req.body);
     res.status(200).end();
   }
+  res.status(200).end();
 });
 
 //newly added---------------------------------------------------------------------------------------------------------------------
