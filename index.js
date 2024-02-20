@@ -57,6 +57,7 @@ app.post("/ultramsgwebhook", async (req, res) => {
       }
         console.log("Already Triggered");
         await db.collection("trigger").findOneAndDelete({_id: 1})
+        res.status(200).end();
     } 
     else{
       if (messageMsg == "Hi Sharuk") {
@@ -69,6 +70,7 @@ app.post("/ultramsgwebhook", async (req, res) => {
       }
       else {
         invalidBot()
+        res.status(200).end();
       }
       console.log(insertData);
       console.log(req.body);
@@ -151,6 +153,7 @@ app.post("/ultramsgwebhook", async (req, res) => {
     });
     req.write(postData);
     req.end();
+    res.status(200).end();
     console.log(req.body);
   }
 
