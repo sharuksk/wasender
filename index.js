@@ -1,10 +1,14 @@
 const express = require("express");
 const app = express();
-const http = require("http");
+const http = require("https");
 const server = http.createServer(app);
 const cors = require("cors");
-const port = 3006;
-const WhatsApp = require("whatsapp");
+const port = 3000;
+const { MongoClient, ObjectId, ChangeStream } = require("mongodb");
+const mongodb = require("mongodb");
+const url =
+  "mongodb+srv://sharukajmal2:SharukDB%40123@cluster0.cfzoga8.mongodb.net/?retryWrites=true&w=majority";
+var qs = require("querystring");
 const router = require("./routes/wasRoutes");
 const bodyParser = require("body-parser");
 app.use(bodyParser.json({ limit: "50mb" }));
@@ -304,7 +308,7 @@ app.post("/ultramsgwebhook", async (req, res) => {
 });
 
 //newly added---------------------------------------------------------------------------------------------------------------------
-
+app.use(bodyParser.json());
 app.listen(port, () => {
   console.log("app wasrendereing", port);
 });
