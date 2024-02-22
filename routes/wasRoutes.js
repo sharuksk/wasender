@@ -47,5 +47,6 @@ router.post("/deletereply", handleDeleteReply);
 router.post("/idreply", handleIdReply);
 router.post("/editreply", handleEditReply);
 //
+router.post("/ultramsgwebhook", ultramsgwebhook);
 
 module.exports = router;
