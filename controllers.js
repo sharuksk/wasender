@@ -1,11 +1,13 @@
 const uniqid = require("uniqid");
-const { MongoClient, ObjectId, ChangeStream } = require("mongodb");
+//const { MongoClient, ObjectId, ChangeStream } = require("mongodb");
 const mongodb = require("mongodb");
 const http = require("https");
+const { MongoClient, ServerApiVersion } = require('mongodb');
+const uri = "mongodb+srv://sharukajmal2:SharukDB%40123@cluster0.cfzoga8.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
 // const url =
 //   "mongodb+srv://yadharth:1234567890@wasender.qenvxus.mongodb.net/?retryWrites=true&w=majority";
-const url =
-  "mongodb+srv://sharukajmal2:SharukDB%40123@cluster0.cfzoga8.mongodb.net/?retryWrites=true&w=majority";
+// const url =
+//   "mongodb+srv://sharukajmal2:SharukDB%40123@cluster0.cfzoga8.mongodb.net/?retryWrites=true&w=majority";
 const axios = require("axios");
 const qs = require("qs");
 const nodeBase64 = require("nodejs-base64-converter");
@@ -668,7 +670,13 @@ exports.ultramsgwebhook = async (req, res) => {
     // print all response
     const messageMsg = req.body["data"]["body"]; // Message text
     var to = req.body["data"]["from"];
-    const client = await MongoClient.connect(url);
+    const client = new MongoClient(uri, {
+      serverApi: {
+        version: ServerApiVersion.v1,
+        strict: true,
+        deprecationErrors: true,
+      }
+    });
     const db = client.db("WASender");
   
       // await db.collection("trigger").insertOne({
