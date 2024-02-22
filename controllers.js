@@ -3,6 +3,8 @@ const { MongoClient, ObjectId, ChangeStream } = require("mongodb");
 const mongodb = require("mongodb");
 const http = require("https");
 const url =
+  "mongodb+srv://yadharth:1234567890@wasender.qenvxus.mongodb.net/?retryWrites=true&w=majority";
+const url2 =
   "mongodb+srv://sharukajmal2:SharukDB%40123@cluster0.cfzoga8.mongodb.net/?retryWrites=true&w=majority";
 const axios = require("axios");
 const qs = require("qs");
@@ -666,7 +668,7 @@ exports.ultramsgwebhook = async (req, res) => {
     // print all response
     const messageMsg = req.body["data"]["body"]; // Message text
     var to = req.body["data"]["from"];
-    const client = await MongoClient.connect(url);
+    const client = await MongoClient.connect(url2);
     const db = client.db("WASender");
   
       // await db.collection("trigger").insertOne({
