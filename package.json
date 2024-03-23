@@ -1,11 +1,10 @@
 {
   "name": "wabe",
   "version": "1.0.0",
-  "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon index.js"
+    "start": "node index.js",
+    "server":"nodemon index.js"
   },
   "author": "",
   "license": "ISC",
@@ -17,7 +16,10 @@
     "express": "^4.18.2",
     "https": "^1.0.0",
     "mongodb": "^6.3.0",
+    "node-schedule": "^2.1.1",
     "nodejs-base64-converter": "^1.0.5",
     "uniqid": "^5.4.0"
-  }
+  },
+  "devDependencies": {},
+  "description": ""
 }
