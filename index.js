@@ -66,11 +66,13 @@ app.post('/sendMsgScheduler', async (req, res) =>{
 //   return getData;
 // }
 
+
+
 async function a (){
   try{
     var date;
     var date = await  Scheduler.findOne().then(data=> date=data.msg);
-    console.log(date);
+    //console.log(date);
   }
   catch(err){
     console.log(err)
@@ -78,31 +80,14 @@ async function a (){
 
 }
 
+// var promise=a() 
 
-// var date = Call();
-// console.log(date);
+// promise.then((ans)=>{
+//   result= ans 
+//   }
+//   )
 
-// let new_promise_variable = 
-//     new Promise ((resolve, reject) => {
-//         resolve(Call())
-//     });
-
-//     var newData;
-//   new_promise_variable.then(function(result) {
-//     newData = result
-    //console.log(newData);
-   
-       // "Some User token"
-   //})
-   
-//     var newData;
-// new_promise_variable.then((data) => {
-//   return data ;
-// }).catch((error) => {
-//   console.log(error);
-// })
-
-//console.log(new_promise_variable);
+//   console.log(promise);
 
 
 // var date = [
@@ -128,38 +113,50 @@ async function a (){
 //   }
 // ]
 
-// console.log(date[0].msg);
-// date.shift();
-// console.log(date[0].msg);
 
 
-// const job = schedule.scheduleJob(date, function(){
-//     console.log("Triggered with a msg")
-//     var axios = require('axios');
-//     var qs = require('qs');
-//     var data = qs.stringify({
-//         "token": "tz4c7nm9r4luh6i4",
-//         "to": "+919500310909",
-//         "body": `Hari trigger ${date}`
-//     });
+async function a (){
+  try{
+    var date;
+    var date = await  Scheduler.findOne().then(data=> date=data.msg);
+    console.log(date);
+    jobCall(date);
+  }
+  catch(err){
+    console.log(err)
+  }
 
-//     var config = {
-//     method: 'post',
-//     url: 'https://api.ultramsg.com/instance77326/messages/chat',
-//     headers: {  
-//         'Content-Type': 'application/x-www-form-urlencoded'
-//     },
-//     data : data
-//     };
+}
+a ()
+function jobCall(vardate){
+const job = schedule.scheduleJob(vardate, function(){
+    console.log("Triggered with a msg")
+    var axios = require('axios');
+    var qs = require('qs');
+    var data = qs.stringify({
+        "token": "tz4c7nm9r4luh6i4",
+        "to": "+919500310909",
+        "body": `Hari trigger ${vardate}`
+    });
 
-//     axios(config)
-//     .then(function (response) {
-//     console.log(JSON.stringify(response.data));
-//     })
-//     .catch(function (error) {
-//     console.log(error);
-//     });
-//   });
+    var config = {
+    method: 'post',
+    url: 'https://api.ultramsg.com/instance77326/messages/chat',
+    headers: {  
+        'Content-Type': 'application/x-www-form-urlencoded'
+    },
+    data : data
+    };
+
+    axios(config)
+    .then(function (response) {
+    console.log(JSON.stringify(response.data));
+    })
+    .catch(function (error) {
+    console.log(error);
+    });
+  });
+}
 
 //=====================================================================================================  
 var qs = require("querystring");
