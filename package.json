@@ -18,6 +18,7 @@
     "https": "^1.0.0",
     "mongodb": "^6.3.0",
     "mongoose": "^8.2.3",
+    "node-cron": "^3.0.3",
     "node-schedule": "^2.1.1",
     "nodejs-base64-converter": "^1.0.5",
     "uniqid": "^5.4.0"

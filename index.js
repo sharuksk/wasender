@@ -113,7 +113,12 @@ async function a (){
 //   }
 // ]
 
+const cron = require('node-cron');
 
+// Schedule the cron job to run every minute
+cron.schedule('* * * * *', () => {
+  a ();
+});
 
 async function a (){
   try{
@@ -127,7 +132,7 @@ async function a (){
   }
 
 }
-a ()
+a ();
 function jobCall(vardate){
 const job = schedule.scheduleJob(vardate, function(){
     console.log("Triggered with a msg")
